@@ -29,7 +29,6 @@ def to_string(imageFilename, language:str, text_file: str):
     cleanTxt = text_processor.process_text(txt)
     cleanTxt_file = open(text_file, "w")
     cleanTxt_file.write(cleanTxt)
-    #print(cleanTxt)
     return text_file
 
 

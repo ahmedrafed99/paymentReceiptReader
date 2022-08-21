@@ -1,9 +1,5 @@
 import re
 
-import nltk
-
-import maths
-from image_parser import to_string
 
 def extract_lines_containing(string:str, text_file:str):
     lines = open(text_file, "r").readlines()
