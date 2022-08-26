@@ -21,7 +21,7 @@ def extract_TVA_percentage(candidates:[str]):
 
 
 def extract_TVA_price(candidates:[str]):
-    value = '(TVA.*\d+(.)\d+(?!%))'
+    value = '(TVA 20,00%*\d+(.)\d+(?!%))'
     pattern = re.compile(value, re.IGNORECASE)
 
     for candidate in candidates:
