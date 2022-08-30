@@ -12,7 +12,7 @@ app = FastAPI()
 #matched_lines = data_extractor.extract_lines_containing("TVA", text_file)
 #data_extractor.extract_TVA_percentage(matched_lines)
 
-print(data_extractor.extract_phone_number("SiRet,;/0625807920, o hello kussi"))
+print(data_extractor.extract_VAT_percentage("0,25 0.625 TVA A 20,00%  5,25€"))
 #data_extractor.extract_TVA_price(matched_lines)
 
 # @app.get("/")

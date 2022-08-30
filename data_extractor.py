@@ -3,6 +3,8 @@ import re
 import nltk
 from nltk import TreebankWordDetokenizer
 
+import maths
+
 
 def extract_lines_containing(string:str, text_file:str):
     lines = open(text_file, "r").readlines()
@@ -13,27 +15,49 @@ def extract_lines_containing(string:str, text_file:str):
 
     return matches
 
-def extract_TVA_percentage(candidates:[str]):
-    value = '(\d+((.)\d+)?\s*?%)'
-    pattern = re.compile(('TVA.' + value), re.IGNORECASE)
-    for candidate in candidates:
-        result = re.search(pattern, candidate)
-        if result:
-            TVA_value = re.search(value, result.group())
-            print(TVA_value.group())
+def extract_VAT_percentage(string):
+
+    if "TVA".casefold() in string.casefold():
+        words = nltk.word_tokenize(string)
+        print(words)
+
+        percent_index = words.index("%")
+        if percent_index:
+            i = percent_index
+        else:
+            raise Exception("the character '%' does not exist in the following string and therefore the vat percentage does most likely not exist :\n -> " + string)
+        while i>0:
+            vat_percentage = maths.detectNumber(words[i-1])
+            if vat_percentage:
+                print("the vat percentage is : " + vat_percentage + "%")
+                return vat_percentage
+            else:
+                i -= 1
+        raise Exception("No vat percentage found in the following string :\n " + string)
+
+    raise Exception("The VAT percentage is likely not to be found in the following string as the word 'VAT' does not exist either :\n" + string)
 
 
-def extract_TVA_price(candidates:[str]):
 
-    value = '(TVA 20,00%*\d+(.)\d+(?!%))'
-    pattern = re.compile(value, re.IGNORECASE)
+def extract_VAT_price(string:str) -> str:
 
-    for candidate in candidates:
-        print("i am a candidate line in the text, i have the word TVA:\n"+candidate)
-        result = re.search(pattern, candidate)
-        if result:
-            TVA_value = re.search(value, result.group())
-            print("found a match!\n" + TVA_value.group() + "\n")
+    if "TVA".casefold() in string.casefold():
+        words = nltk.word_tokenize(string)
+        print(words)
+
+        percent_index = words.index("%")
+        i = percent_index
+
+        while len(words) > i+1:
+            vat_price = maths.detectNumber(words[i+1])
+            if vat_price:
+                print("the vat price is : " + vat_price)
+                return vat_price
+            else:
+                i += 1
+        raise Exception("No vat price is found in the following string :\n " + string)
+
+    raise Exception("The VAT price is likely not to be found in the following string as the word 'VAT' does not exist either :\n" + string)
 
 
 def extract_siren(string: str) -> str:
